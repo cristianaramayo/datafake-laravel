@@ -3,25 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 
 use Faker;
 use ArrayObject;
 
+
+
 class DatasetController extends Controller
 {
-    public function index()
+   /* public function show(Request $array)
+    {
+        return Inertia::render('Show', compact('$array')->with('status', " Dataset $file creado con exito..");
+    }
+*/
+
+    public function attach(Request $request)
     {
         //recibimos un String DESDE FRONTEND  -----------
-        /*
-        status_list = ['Full Time', 'Part Time', 'Per Diem']
-        team_list = fake.color(4)
-        fake_workers = [{'x,
-                  'Worker Name':fake.name(20), 
-                  'Hire Date':fake.date(3),
-                  'Worker Status':random(staus_list),
-                  'Team':random(team_list)} for x in range(30)]
+        
+        $data_string = $request->code;
                   
-        */
+        /*
         $data_string = 
         "fake_workers = [{'x,
         'Worker Name' : fake .name(10),
@@ -31,6 +35,7 @@ class DatasetController extends Controller
         'Worker Status' : random([part_time, full_time]),
         'Team' : random([azul, rojo, amarillo, verde]), 
         } for x in range(30)]";
+        */
         //----------------------------------------------
         //Limpiamos, retiramos rows y convertimos de string a array de atributos/fields 
         $split_array = $this->splitInputs($data_string);
@@ -124,7 +129,10 @@ class DatasetController extends Controller
         
         $this->createCsv($array_csv, $my_name);
 
-        return view('vistafaker', compact('array_csv'));
+        //return view('vistafaker', compact('array_csv'));
+        //return redirect()->route('show', compact('array_csv'));
+        $datas = $array_csv;
+        return Inertia::render('Show', compact('datas'));
         
     }
 
