@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Custom;
 
 use Illuminate\Http\Request;
 use Faker;
@@ -16,105 +16,151 @@ class FakeLib
         "fake_workers = [{'x,
         'Worker Name' : fake .name(10),
         'Hire Date' : fake.date(5),
-        'Production Date' : fake.date(),
+        'Production Date' : fake.date.only,
         'Number Produced ' : fake.randomNumber(),
         'Worker Status' : random([part_time, full_time]),
         'Team' : random([azul, rojo, amarillo, verde]), 
         } for x in range(30)]";
         */
         //----------------------------------------------
-        //Limpiamos, retiramos rows y convertimos de string a array de atributos/fields 
-        $split_array = FakeLib::splitInputs($data_string);
+        //Convertimos de string a array separados por saltos de carro 
+        $split_inputs = $This->splitInputs($data_string);
         //$string = str_replace(" ", "",$string);
-        array_shift($split_array);
-        
-        $data_row = array_pop($split_array);
-        
-        $fake_array = [];
-        $no_fake_array =[];
-        $only_fake_array =[];
-        $first_type = "";    
-        $partial_array = [];
-        $faker = Faker\Factory::create('es_ES'); 
-        foreach ($split_array as $split_string)
-        {
-            if(stristr($split_string, "fake") == TRUE) {
+        array_shift($split_inputs);
+        $data_row = array_pop($split_inputs);
 
-                if(stristr($split_string, "()") == TRUE)
-                {
-                    $llave = $this->splitName($split_string);
-                    $valor =$this->splitType($split_string);
-                    array_push($only_fake_array, [ $llave => $valor]);
-                }
-                else
-                    {
-                    
-                    $first_count = $this->splitCount($split_string);
-                    array_push($fake_array, $this->factoryArray($split_string, $faker));
-                    }
-               
+        $fake_num_sent = [];
+        $fake_sent = [];
+        $random_sent =[];
+        
+        $fake_only_sent =[];
+        //Separamos Inputs o "Saltos de carro" segun el tipo
+        foreach ($split_inputs as $input)
+        {
+            switch ($this->typeSentence($input)) {
+                case "fake"://fake[]
+                    array_push($fake_sent, $input);
+                    break;
+                case "fake.num"://fake[num]
+                    array_push($fake_num_sent, $input);
+                    break;
+                case "fake.only"://fake()
+                    array_push($fake_only_sent, $input);
+                    break;
+                case "randmon"://random[array]
+                    array_push($random_sent, $input);
+                    break;
             }
-            elseif(stristr($split_string, "random") == TRUE ) {
-                array_push($no_fake_array, $this->splitArray($split_string));
-            }
-            
-           
         }
+        //Obtenemos array de arrays random ingresado por el usuario (datos reales)
+        $random_array = [];
+        foreach($random_sent as $input){
+            array_push($random_array, $this->splitArray($input));    
+        }
+
+        //Se ordena el Array con sentencias 'fake[num]', con 'num' mayor primero
+        $fake_num_sent = $this->orderByCount($fake_num_sent);
+        $first_fake = array_shift($fake_num_sent);//obtenemos y guardamos el primer input
+        //Completamos con datos falsos los demas, y los guardamos en un array
+        $faker = Faker\Factory::create('es_ES');
+        $fake_num_array = [];
+        foreach($fake_num_sent as $input){
+            array_push($fake_num_array, $this->factoryArray($input, $faker));    
+        }
+
+        $f_count = $this->splitCount($first_fake);//toma el primero
+        $f_key = $this->splitName($first_fake);
+        $f_type =$this->splitType($first_fake);
+
+        //Completamos con datos falsos el primer y mayor input 
+        $partial_array = [];
+        for($i=1; $i<=$f_count; $i++){
+
+            $faker_row = [];
+            $faker_row[$f_key] = $faker->$f_type;
+            foreach ($fake_num_array as $fake_column ){      
+                $key = array_key_first($fake_column);
+                $value = $fake_column[$key];
+                $faker_row[$key] = array_rand(array_flip($value), 1);   
+            }
+            //
+            foreach($fake_sent as $input){
+                $key = $this->splitName($input);
+                $type = $this->splitType($input);
+                $faker_row[$key] = $faker->$type;
+            }
+            //
+            foreach($random_array as $real_column){
+                $key = array_key_first($real_column);
+                $value = $real_column[$key];
+                $faker_row[$key] = array_rand(array_flip($value), 1);
+            }
+            //Metemos filas al Array mayor
+            array_push($partial_array, $faker_row);
+        }       
         //var_dump($no_fake_array);
         
-        //$faker->seed(10);
-        
-        for ($i=1; $i<=$first_count; $i++)
-        {   
-            
-            $faker_row = [];
-            //reset($fake_array);
-            foreach ($fake_array as $fake_column)
-            {
-                $llave = array_key_first($fake_column);
-                $valor = $fake_column[$llave];
-                $faker_row[$llave] = array_rand(array_flip($valor), 1);
-                    
-                
-            }
-            foreach ($no_fake_array as $fake_column)
-            {
-                $llave = array_key_first($fake_column);
-                $valor = $fake_column[$llave];
-                $faker_row[$llave] = array_rand(array_flip($valor), 1);
-                    
-                
-            }
-           
-            array_push($partial_array, $faker_row);
-        
-                  
-              
-        }
-        $array_csv = [];
+         
+        $total_array = [];
         $row = $this->splitCount($data_row);
         for ($i=0; $i<=($row-1); $i++)
         {
             shuffle($partial_array);
-            foreach ($only_fake_array as $fake_column)
-            {
-                $llave = array_key_first($fake_column);
-                $valor = $fake_column[$llave];
-                
-                //numberBetween(100, 500)
-                $only[$llave] = $faker->$valor; 
-                    
-            
-                $array_csv[$i] = array_merge($partial_array[1], $only);
-            }
-            
+            //elegimos un registro del array parcial al azar
+            foreach($fake_only_sent as $input){
+                $key = $this->splitName($input);
+                $type = $this->splitType($input);
+                $only_row[$key] = $faker->$type;
+                //Y realizamos merge del valor 'independiente' al regitro 
+                $total_array[$i] = array_merge($partial_array[1], $only_row);
+            }           
             
         }
-        return $array_csv;
+        return $total_array;
         
     }
     
-    
+    private function orderByCount($fake_num_sent)
+    {
+        $array = $fake_num_sent;
+        $first_sent = array_shift($array);
+        $mayor = $this->splitCount($array);//toma el primero
+        $first = $first_sent;
+        foreach ($array as $input ){      
+            $count = $this->splitCount($input);
+            if ($count>$mayor){
+                $mayor = $count;
+                $first = $input;
+            }
+        }
+        $new_array = ($first);
+        
+        foreach ($fake_num_sent as $input){
+            if ($input != $first){
+                array_push($new_array, $input);
+            }
+        } 
+        return $new_array;   
+    }
+
+    private function typeSentence($input)
+    {
+        $type ="";
+        if(stristr($input, "fake.") == TRUE) {
+
+            if(stristr($input, "[]") == TRUE) {
+                $type = "fake";
+            }elseif(stristr($input, "()") == TRUE){
+                    $type = "fake.only";
+            }elseif(empty(splitCount($input))){
+                    $type = "fake.num";    
+            }
+        }elseif(stristr($input, "random") == TRUE){
+            $type = "random";
+        }
+        return $type;
+    }
+
     public function splitInputs($string)
     {
         $split = "\n";
@@ -149,7 +195,7 @@ class FakeLib
 
         
         $char = substr($string, (strlen($string)-1), 1);
-        while  (is_numeric($char)==FALSE) 
+        while  ((is_numeric($char)==FALSE) && ($char != "")) 
         {
             
             $string = substr($string, 0, (strlen($string)-1));
@@ -167,7 +213,7 @@ class FakeLib
 
         }
         //lo convertimos a entero
-        $count = intval($count);
+        if ($count != "") $count = intval($count);
         return $count;
     }
 
@@ -221,8 +267,7 @@ class FakeLib
     }
 
    public function factoryArray($string, $faker)
-    {
-        
+    { 
         $type = $this->splitType($string);
         $llave = $this->splitName($string);
 
