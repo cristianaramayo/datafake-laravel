@@ -19,8 +19,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::post('/attach', [DatasetController::class, 'attach'])
-    ->name('attach')
+Route::post('/store', [DatasetController::class, 'store'])
+    ->name('store')
     ->middleware('auth:sanctum');
 //Route::get('/show', [DatasetController::class, 'show'])->name('show');
 

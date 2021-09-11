@@ -4,35 +4,39 @@ namespace App\Custom;
 
 use Illuminate\Http\Request;
 use Faker;
+use App\Http\Controllers;
 
-
-class FakeLib 
+class FakeLib extends Controller
 {
     
-    private function attachMain($data_string)
+     
+    public function attachMain($data_string)
+
     {
-        /*
-        $data_string = 
-        "fake_workers = [{'x,
-        'Worker Name' : fake .name(10),
-        'Hire Date' : fake.date(5),
-        'Production Date' : fake.date.only,
-        'Number Produced ' : fake.randomNumber(),
-        'Worker Status' : random([part_time, full_time]),
-        'Team' : random([azul, rojo, amarillo, verde]), 
-        } for x in range(30)]";
-        */
+        
+/** */        $data_string = 
+        "fake_workers = [{x,
+            'Worker Name' : fake.name[10],
+            'Birth Date' : fake.date[],
+            'Hire Date' : fake.date[5],
+            'Production Date' : fake.date(),
+            'Number Produced ' : fake.randomNumber(),
+            'Worker Status' : random([part_time, full_time]),
+            'Team' : random([azul, rojo, amarillo, verde]), 
+            } for x in range(30)]";
+/** */        
         //----------------------------------------------
         //Convertimos de string a array separados por saltos de carro 
-        $split_inputs = $This->splitInputs($data_string);
-        //$string = str_replace(" ", "",$string);
-        array_shift($split_inputs);
+/** */  //      $data_string = str_replace(" ", "",$data_string);
+        $split_inputs = $this->splitInputs($data_string);
+        
+/** */        $data_name = array_shift($split_inputs); 
         $data_row = array_pop($split_inputs);
 
         $fake_num_sent = [];
         $fake_sent = [];
         $random_sent =[];
-        
+     
         $fake_only_sent =[];
         //Separamos Inputs o "Saltos de carro" segun el tipo
         foreach ($split_inputs as $input)
@@ -59,7 +63,7 @@ class FakeLib
         }
 
         //Se ordena el Array con sentencias 'fake[num]', con 'num' mayor primero
-        $fake_num_sent = $this->orderByCount($fake_num_sent);
+        //$fake_num_sent = $this->orderByCount($fake_num_sent);
         $first_fake = array_shift($fake_num_sent);//obtenemos y guardamos el primer input
         //Completamos con datos falsos los demas, y los guardamos en un array
         $faker = Faker\Factory::create('es_ES');
@@ -116,7 +120,14 @@ class FakeLib
             }           
             
         }
-        return $total_array;
+
+        
+/** */        $my_name = $this->splitTitle($data_name);
+/** */        $this->createCsv($total_array, $my_name);/**/
+
+/** */        return $total_array;
+
+/** */        //return $total_array;/**/
         
     }
     
@@ -152,7 +163,7 @@ class FakeLib
                 $type = "fake";
             }elseif(stristr($input, "()") == TRUE){
                     $type = "fake.only";
-            }elseif(empty(splitCount($input))){
+/**/            }else{
                     $type = "fake.num";    
             }
         }elseif(stristr($input, "random") == TRUE){
@@ -191,27 +202,19 @@ class FakeLib
 
     public function splitCount($string)
     {
+  
         $string = str_replace(" ", "",$string);
 
-        
-        $char = substr($string, (strlen($string)-1), 1);
-        while  ((is_numeric($char)==FALSE) && ($char != "")) 
-        {
-            
-            $string = substr($string, 0, (strlen($string)-1));
-            $char = substr($string, (strlen($string)-1), 1);
-            
-
+        $array_d = explode('[', $string);
+        if (empty($array_d[1])){
+            $array_d = explode('(', $string);
         }
-        $count = "";
-        while  (is_numeric($char)) 
-        {
-            $count = $char.$count ; 
-            $string = substr($string, 0, (strlen($string)-1));
-            $char = substr($string, (strlen($string)-1), 1);
-            
-
+        $array_c = explode(']', $array_d[1]);
+        if (empty($array_c[1])){
+            $array_c = explode(')', $array_d[1]);
         }
+        $count = $array_c[0];
+
         //lo convertimos a entero
         if ($count != "") $count = intval($count);
         return $count;
@@ -240,28 +243,14 @@ class FakeLib
     public function splitType($string)
     {
         $string = str_replace(" ", "",$string);
-
-        $name = "";
         
-        $char = substr($string, (strlen($string)-1), 1);
-        while  ($char != ".") 
-        {    
-            $name = $char.$name ;        
-            
-            $string = substr($string, 0, (strlen($string)-1));
-            $char = substr($string, (strlen($string)-1), 1);
+        $array_d = explode('.', $string);
+        $array_i = explode('[', $array_d[1]);
+        if (empty($array_i[1])){
+            $array_i = explode('(', $array_d[1]);
+        }
+        $type = $array_i[0];
 
-        }
-        $type = "";
-        $char = substr($name, 0, 1);
-       
-        while  ($char != "(") 
-        {    
-            
-            $type = $type.$char ;        
-            $name = substr($name, 1); 
-            $char = substr($name, 0, 1);
-        }
                
         return $type;
     }
@@ -297,4 +286,20 @@ class FakeLib
 
         return $array;
     }
+
+    private function createCsv($array, $name)
+    {
+        // Creamos y abrimos un archivo con el nombre 'archivo.csv' 
+        //$name = $name.'.csv';
+        $file = fopen($name.'.csv', 'w');
+        // Escribimos los datos en el archivo 'archivo.csv'
+        //$array = array_map("utf8_decode", $array);
+        foreach ($array as $row )
+        {
+            fputcsv($file, $row);
+        }
+    
+        // Después de terminar de escribir los datos, cerramos el archivo 'archivo.csv'
+        fclose($file);
+    } 
 }

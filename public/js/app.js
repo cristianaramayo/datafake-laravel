@@ -20775,7 +20775,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      this.$inertia.post(this.route('attach'), this.form);
+      this.$inertia.post(this.route('store'), this.form);
     }
   }
 }));
@@ -25690,7 +25690,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "font-semibold text-xl text-gray-800 leading-tight"
-}, " Módulo de Notas ", -1
+}, " Módulo Datas ", -1
 /* HOISTED */
 );
 

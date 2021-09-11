@@ -66,7 +66,7 @@
         },
         methods: {
             submit() {
-                this.$inertia.post(this.route('attach'), this.form)
+                this.$inertia.post(this.route('store'), this.form)
             }
         }
     })
