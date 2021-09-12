@@ -15,11 +15,11 @@ class DatasetController extends Controller
         //$fakelib = FakeLib;
         $array = $this->attachMain($request->code);
         //$array = attachMain::with('FakeLib')->get($request->code);
-        $data1 = array_shift($array);
+       /* $data1 = array_shift($array);
         $data2 = array_shift($array);
         $datan = array_pop($array);
-
-        $datas = [$data1, $data2, $datan];
+*/
+        $datas = $array;
 
         //temporlamente
         //$this->create($request->code);
