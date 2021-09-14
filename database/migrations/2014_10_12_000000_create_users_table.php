@@ -23,9 +23,9 @@ class CreateUsersTable extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
-            $table->string('biography');
-            $table->bigInteger('num_download')->unsigned();//numero total descargas datasest
-            $table->bigInteger('num_upload')->unsigned();//numero total descargas datasest
+            $table->string('biography')->nullable();;
+            $table->bigInteger('num_download')->unsigned()->default(0);//numero total descargas datasest
+            $table->bigInteger('num_upload')->unsigned()->default(0);//numero total descargas datasest
 
             $table->timestamps();
         }); 
