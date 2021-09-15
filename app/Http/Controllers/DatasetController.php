@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Faker;
 
+
 class DatasetController extends Controller
 {
    
@@ -23,12 +24,22 @@ class DatasetController extends Controller
 
         //temporlamente
         //$this->create($request->code);
-
+       /* return Inertia::render('Show', [
+            compact('datas'),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            
+        ]);*/
         return Inertia::render('Show', compact('datas'));
         
     }
 
-    public function create($data_string)
+    public function create()
+    {
+        return Inertia::render('Datasets/Create');
+    }
+
+  /*  public function create($data_string)
     {
         $split_array = FakeLib::splitInputs($data_string);
         //$string = str_replace(" ", "",$string);
@@ -38,7 +49,8 @@ class DatasetController extends Controller
 
         $this->createCsv($array_csv, $my_name);
 
-    }  
+    } 
+    */ 
     public function attachMain($data_string)
 
     {

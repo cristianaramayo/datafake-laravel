@@ -1111,6 +1111,9 @@ select {
 .col-span-6 {
 	grid-column: span 6 / span 6;
 }
+.col-span-1 {
+	grid-column: span 1 / span 1;
+}
 .m-2 {
 	margin: 0.5rem;
 }
@@ -1651,6 +1654,9 @@ select {
 .pt-8 {
 	padding-top: 2rem;
 }
+.pt-0 {
+	padding-top: 0px;
+}
 .text-left {
 	text-align: left;
 }
@@ -2122,10 +2128,6 @@ select {
 
 	.sm\:h-10 {
 		height: 2.5rem;
-	}
-
-	.sm\:h-20 {
-		height: 5rem;
 	}
 
 	.sm\:w-10 {

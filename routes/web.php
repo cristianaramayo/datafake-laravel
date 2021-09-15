@@ -20,11 +20,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::post('/store', [DatasetController::class, 'store'])
-    ->name('store')
+    ->name('store');
+Route::get('/create', [DatasetController::class, 'create'])
+    ->name('create')
     ->middleware('auth:sanctum');
-//Route::get('/show', [DatasetController::class, 'show'])->name('show');
 
-//Route::resource('datas', App\Http\Controllers\DatasetController::class)
-//    ->middleware('auth:sanctum');
-
+/*
+Route::resource('datasets', App\Http\Controllers\DatasetController::class)
+    ->middleware('auth:sanctum');
+*/
 
