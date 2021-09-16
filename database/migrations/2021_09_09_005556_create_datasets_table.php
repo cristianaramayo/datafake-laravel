@@ -20,12 +20,12 @@ class CreateDatasetsTable extends Migration
             #$table->BigInteger('category_id')->unsigned();
 
             $table->string('title');
-            $table->string('slug')->unique();
+            //$table->string('slug')->unique();
 
             $table->text('code');
             $table->text('about');
             $table->boolean('free')->default(1);
-            $table->string('archivo');//url donde se encuentra guardado
+            //$table->string('archivo');//url donde se encuentra guardado
             $table->BigInteger('num_download')->unsigned();//numero de descargas del dataset
 
             $table->foreign('user_id')->references('id')->on('users');

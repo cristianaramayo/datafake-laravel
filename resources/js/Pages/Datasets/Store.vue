@@ -2,7 +2,7 @@
     <app-layout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Datatuill
+               
             </h2>
         </template>
     
@@ -16,7 +16,7 @@
                     
                     <div class="justify-center mt-5 md:mt-0">
                         <div class=" justify-center shadow bg-white md:rounded-md p-4">
-                            <div> {{ code  }} </div>
+                            <div> {{ title  }} </div>
                             
                             <div class="flex flex-auto text-sm text-gray-600 p-4"  >
                                 
@@ -86,7 +86,7 @@
                                 </label>
                                 <textarea 
                                     class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.description"
+                                    v-model="form.about"
                                     rows="5"
                                 ></textarea>
                                 <button 
@@ -127,14 +127,17 @@
         },
         data () {
             return {
-                name: this.datas.shift(),
+                title: this.datas.shift(),
                 code: this.datas.shift(),
                 first_data: this.datas.shift(),
                 last_data: this.datas.pop(),
 
-                color: "bg-gray-200",
+                
                 form: {
-                    description: 'Holis',
+                    about: '',
+
+                    title: this.datas.shift(),
+                    code: this.datas.shift(),
                 }
             }
         },

@@ -15,21 +15,26 @@ class DatasetController extends Controller
         //recibimos un String DESDE FRONTEND  -----------
         $code = $request->code;
         
-        $name = $this->splitName($code);
+        $title = $this->splitTitle ($code);
         $array = $this->attachMain($code);
         
         $first_objects = $this->firstArray($array, 5);
         $last_objects = $this->lastArray($array, 5);
        
-        $datas = [$name, $code, $first_objects, $last_objects];
+        $datas = [$title, $code, $first_objects, $last_objects];
 
-        return Inertia::render('Show', compact('datas'));
+        return Inertia::render('Datasets/Store', compact('datas'));
         
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Datasets/Create');
+        $request->validate([
+            'description' => 'required',
+        ]);
+
+        Dataset::create($request->all());
+        return redirect()->route('dashboard')->with('status', 'Dataset created');
     }
 
   /*  public function create($data_string)
