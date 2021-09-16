@@ -7,7 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\DatasetController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Index', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -15,12 +15,14 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
 Route::post('/store', [DatasetController::class, 'store'])
-    ->name('store');
+    ->name('store')
+    ->middleware('auth:sanctum');
 Route::get('/create', [DatasetController::class, 'create'])
     ->name('create')
     ->middleware('auth:sanctum');

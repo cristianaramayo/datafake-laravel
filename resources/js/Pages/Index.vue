@@ -1,5 +1,5 @@
 <template>
-    <Head title="Welcome" />
+    <Head title="Datatuill" />
 
     <div class="justify-center  bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
         <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -25,22 +25,21 @@
             <div class="flex justify-center pt-0  ">
                 <img src="/images/logo-datatuill.jpg" alt="Datatuill" width="263" height="70" >      
             </div>
-            <div class="flex justify-center pt-0   mt-2 text-gray-600 dark:text-gray-400 text-lg">
-               <h1>The World's First Fake Data Platform</h1>
+            <div class="flex justify-center pt-0   mt-2 text-gray-600 dark:text-gray-400 text-xl">
+               <h1>The World's First Dummy Data Platform</h1>
             </div>
             
         </div>        
          <div>           
 
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">  
-                <div class="md:grid md:grid-cols-3 md:gap-6">
-                    <div class="md:col-span-1">
-                        <div class="px-4 sm:px0">
-                            <h3 class="text-lg text-gray-900">Create Dataset</h3>
-                            <p class="text-sm text-gray-600">Instrucciones blabla bla...</p>
-                        </div>
-                    </div>
+                <div class="md:grid md:grid-cols-1 md:gap-6">
+                    
                     <div class="md:col-span-2 mt-5 md:mt-0">
                         <div class="shadow bg-white md:rounded-md p-4">
                             <form @submit.prevent="submit">
@@ -51,7 +50,7 @@
                                 <textarea 
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.code"
-                                    rows="8"
+                                    rows="2" 
                                 ></textarea>
                                 <button 
                                     class="   bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
@@ -59,32 +58,61 @@
                             </form>
                         </div>
                     </div>
+                    <div class="md:col-span-1">
+                        <div class="px-4 sm:px0">
+                            <h3 class="text-lg text-gray-900">Create Dataset</h3>
+                            <p class="text-sm text-gray-600">Instrucciones blabla bla...</p>
+                        </div>
+                    </div>
                 </div>  
             </div>
         </div>
-
+             </div>  
+            </div>
+        </div>
         </div>
         <div>            
                 
-            
+         
 
             <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
+               <!-- <div class="justify-center  bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0"> -->
+                    
+                <!--</div>-->
                 <div class="text-center text-sm text-gray-500 sm:text-left">
-                    <div v-if="canLogin" class="flex items-center">
+                    <div v-if="canLogin" class="bottom-0 left-0 px-6 py-2 sm:block">
+                        <Link v-if="$page.props.user" :href="route('dashboard')" class="text-sm text-gray-700 underline">
+                            Dashboard
+                        </Link>
+                        <template v-else>
                         <Link :href="route('login')" class="text-sm text-gray-700 underline">
                             Log in
                         </Link>
+
                         <Link v-if="canRegister" :href="route('register')" class="ml-4 text-sm text-gray-700 underline">
                             Register
+                        </Link>
+                        </template>
+                    </div>
+                    <div v-if="canLogin" class="left-0 px-6 py-2 sm:block">
+                        <Link :href="route('register')" class="text-sm text-gray-700 underline">
+                            Terminos
+                        </Link>
+                        <Link v-if="canRegister" :href="route('register')" class="ml-4 text-sm text-gray-700 underline">
+                            Privacidad
+                        </Link>
+                        <Link v-if="canRegister" :href="route('register')" class="ml-4 text-sm text-gray-700 underline">
+                            Tutorial
                         </Link>
                     </div>
                 </div>
 
-                <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                <div class=" align-text-bottom mb-0 px-6 text-sm text-gray-500 text-right ">
                     © 2021 All Rights Reserved, Datatuill
                 </div>
             </div>
         </div>
+    
     </div>
 </template>
 

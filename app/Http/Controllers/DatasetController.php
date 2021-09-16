@@ -20,7 +20,7 @@ class DatasetController extends Controller
         $data2 = array_shift($array);
         $datan = array_pop($array);
 */
-        $datas = $array;
+        $datas = [$request->code, $array];
 
         //temporlamente
         //$this->create($request->code);
@@ -226,8 +226,8 @@ class DatasetController extends Controller
 
     public function splitName($string)
     {
-        //$string = str_replace(" ", "",$string);
-
+       // $string = str_replace(" ", "",$string);
+        
         $name = "";
         $char = substr($string, 0, 1);
         
@@ -238,7 +238,8 @@ class DatasetController extends Controller
             $string = substr($string, 1); 
             $char = substr($string, 0, 1);
         }
-        $name = trim($name," '");        
+        $name = trim($name," '");  
+        $name = trim($name," ");      
         return $name;
     }
 
@@ -278,7 +279,8 @@ class DatasetController extends Controller
             $string = substr($string, 1); 
             $char = substr($string, 0, 1);
         }
-        $name = trim($name," '");        
+        $name = trim($name," '");
+        $name = trim($name," ");
         return $name;
     }
 
