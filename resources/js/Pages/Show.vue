@@ -16,36 +16,56 @@
                     
                     <div class="justify-center mt-5 md:mt-0">
                         <div class=" justify-center shadow bg-white md:rounded-md p-4">
-                            <div> {{ code = datas.shift() }} </div>
-                            <div> {{ datasets = datas.shift() }} </div>
+                            <div> {{ code  }} </div>
+                            
                             <div class="flex flex-auto text-sm text-gray-600 p-4"  >
                                 
                                 <table class="justify-center px-4 py-4 bg-gray-300 ">
                                 <tr class=" px-2 py-4 m-2">
-                                     <td class="border bg-gray-100 px-4 py-2 m-2">
-                                        
-                                    </td>
-                                    <td v-for="(value,key)  in first = datasets.shift()" class=" border bg-gray-100 px-4 py-2 m-2">
+                                     
+                                    <td v-for="(value,key)  in first = first_data.shift()" class=" border bg-gray-100 px-4 py-2 m-2">
                                         <div class="flex justify-end" >
                                            {{ key }}
                                         </div>
                                     </td>
                                 </tr>
                                 <tr class=" px-2 py-4 m-2">
-                                    <td class=" border px-4 py-2 m-2">
-                                        00
-                                    </td>
+                                   
                                     <td v-for="(value,key) in first" class="border px-4 py-2 m-2">
                                         <div class="flex justify-end" >
                                           {{ value }} 
                                         </div>
                                     </td>
                                 </tr>
-                                
-                                <tr v-for="i in 9" class=" border px-2 py-4 m-2">
-                                    <td class=" px-4 py-2 m-2">
-                                         0{{i}}                                    </td>
-                                    <td v-for="(value,key) in datasets.shift()" class="border px-4 py-2 m-2">
+                               
+                                <tr  v-for="dat in first_data"  class=" border px-2 py-4 m-2 ">
+                                   
+                                    <td v-for="(value,key) in dat"   class="border px-4 py-2 m-2">
+                                        <div class="flex justify-end" >
+                                          {{ value }}
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                 <tr class=" px-2 py-4 m-2">
+                                     
+                                    <td v-for="(value,key)  in last = last_data.shift()" class=" border bg-gray-200 px-4 py-2 m-2">
+                                        <div class="flex justify-end" >
+                                           <p>...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class=" px-2 py-4 m-2">
+                                   
+                                    <td v-for="(value,key) in last" class="border px-4 py-2 m-2">
+                                        <div class="flex justify-end" >
+                                          {{ value }} 
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr  v-for="dat in last_data" class=" border px-2 py-4 m-2">
+                                   
+                                    <td v-for="(value,key) in dat" class="border px-4 py-2 m-2">
                                         <div class="flex justify-end" >
                                           {{ value }}
                                         </div>
@@ -107,7 +127,12 @@
         },
         data () {
             return {
-               
+                name: this.datas.shift(),
+                code: this.datas.shift(),
+                first_data: this.datas.shift(),
+                last_data: this.datas.pop(),
+
+                color: "bg-gray-200",
                 form: {
                     description: 'Holis',
                 }

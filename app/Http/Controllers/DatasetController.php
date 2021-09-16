@@ -13,23 +13,16 @@ class DatasetController extends Controller
     public function store(Request $request)
     {
         //recibimos un String DESDE FRONTEND  -----------
-        //$fakelib = FakeLib;
-        $array = $this->attachMain($request->code);
-        //$array = attachMain::with('FakeLib')->get($request->code);
-       /* $data1 = array_shift($array);
-        $data2 = array_shift($array);
-        $datan = array_pop($array);
-*/
-        $datas = [$request->code, $array];
+        $code = $request->code;
+        
+        $name = $this->splitName($code);
+        $array = $this->attachMain($code);
+        
+        $first_objects = $this->firstArray($array, 5);
+        $last_objects = $this->lastArray($array, 5);
+       
+        $datas = [$name, $code, $first_objects, $last_objects];
 
-        //temporlamente
-        //$this->create($request->code);
-       /* return Inertia::render('Show', [
-            compact('datas'),
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            
-        ]);*/
         return Inertia::render('Show', compact('datas'));
         
     }
@@ -153,12 +146,15 @@ class DatasetController extends Controller
         {
             shuffle($partial_array);
             //elegimos un registro del array parcial al azar
+            //Lo indexamos
+            $index['Id'] = $i;
+            
             foreach($fake_only_sent as $input){
                 $key = $this->splitName($input);
                 $type = $this->splitType($input);
                 $only_row[$key] = $faker->$type;
-                //Y realizamos merge del valor 'independiente' al regitro 
-                $total_array[$i] = array_merge($partial_array[1], $only_row);
+                //Y realizamos merge de cada valor 'independiente' al regitro 
+                $total_array[$i] = array_merge($index, $partial_array[1], $only_row);
             }           
             
         }
@@ -172,7 +168,23 @@ class DatasetController extends Controller
 /** */        //return $total_array;/**/
         
     }
+    public function firstArray($array, $num) {
+        $first_array = [];
+        for ($i=1;$i<=$num;$i++) {
+            array_push($first_array, array_shift( $array));
+        }
+        return $first_array;
+    }
     
+    public function lastArray($array, $num) {
+        $last_array = [];
+        for ($i=1;$i<=$num;$i++) {
+            array_push($last_array, array_pop($array));
+        }
+        $last_array = array_reverse($last_array);
+        return $last_array;
+    }
+
     private function orderByCount($fake_num_sent)
     {
         $array = $fake_num_sent;

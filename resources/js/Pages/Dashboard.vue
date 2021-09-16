@@ -30,6 +30,7 @@
                                 </label>
                                 <div  >
                                 <textarea 
+                                    style="height: 100px;"
                                     name="body"
                                     class="form-input w-full rounded-md shadow-sm"
                                     id="body"
@@ -79,13 +80,17 @@
         
         
         methods: {
-            resize (e) {
+           /* resize (e) {
                 e.target.style.heigth = 'auto'
-                e.target.style.heigth = `${e.target.scrollHeight}px`
-            },
+                e.target.style.heigth = (e.target.scrollHeight) + 'px'
+            
+
+            },*/
             submit() {
                 this.$inertia.post(this.route('store'), this.form)
             }
-        }
+        },
+        
+        
     }
 </script>
