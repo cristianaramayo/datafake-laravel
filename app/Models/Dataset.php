@@ -10,7 +10,10 @@ class Dataset extends Model
     use HasFactory; 
 
     protected $fillable = [
-        'description'
+        'user_id',
+        'title',
+        'code',
+        'about'
     ];
 
     public function user()

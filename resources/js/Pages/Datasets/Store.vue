@@ -87,7 +87,7 @@
                                 <textarea 
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.about"
-                                    rows="5"
+                                    rows="4"
                                 ></textarea>
                                 <button 
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
@@ -127,10 +127,10 @@
         },
         data () {
             return {
-                title: this.datas.shift(),
-                code: this.datas.shift(),
-                first_data: this.datas.shift(),
+                
                 last_data: this.datas.pop(),
+                first_data: this.datas.pop(),
+                
 
                 
                 form: {

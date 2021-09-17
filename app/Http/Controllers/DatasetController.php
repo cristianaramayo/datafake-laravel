@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Faker;
-
+use App\Models\Dataset;
+use Illuminate\Support\Facades\Auth;
 
 class DatasetController extends Controller
 {
@@ -30,11 +31,21 @@ class DatasetController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'description' => 'required',
+            'about' => 'required',
         ]);
 
-        Dataset::create($request->all());
-        return redirect()->route('dashboard')->with('status', 'Dataset created');
+        $user_id = Auth::user()->getId();;
+        
+        $datas = [
+            'user_id' => $user_id,
+            'title' => $request->title,
+            'code' => $request->code,
+            'about' => $request->about,
+            
+        ];
+        
+        Dataset::create(compact('datas'));
+        return redirect()->route('dashboard')->with('message', 'Dataset created:'.$user_id.'<-');
     }
 
   /*  public function create($data_string)
