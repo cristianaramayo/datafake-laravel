@@ -34,18 +34,26 @@ class DatasetController extends Controller
             'about' => 'required',
         ]);
 
-        $user_id = Auth::user()->getId();;
+       // $user_id = Auth::user()->getId();;
+/*
+        $dataset = new Dataset;
         
+        $dataset->user_id = Auth::user()->getId();
+        $dataset->title = $request->title;
+        $dataset->code = $request->code;
+        $dataset->about = $request->about;
+ */       
         $datas = [
-            'user_id' => $user_id,
+            'user_id' => Auth::user()->getId(),
             'title' => $request->title,
             'code' => $request->code,
             'about' => $request->about,
             
         ];
-        
-        Dataset::create(compact('datas'));
-        return redirect()->route('dashboard')->with('message', 'Dataset created:'.$user_id.'<-');
+        $msg = $datas['title'];
+
+        $dataset = Dataset::create($datas);
+        return redirect()->route('dashboard')->with('message', 'Dataset created:'.$msg.'<-');
     }
 
   /*  public function create($data_string)

@@ -26,7 +26,7 @@ class CreateDatasetsTable extends Migration
             $table->text('about');
             $table->boolean('free')->default(1);
             //$table->string('archivo');//url donde se encuentra guardado
-            $table->BigInteger('num_download')->unsigned();//numero de descargas del dataset
+            $table->BigInteger('num_download')->unsigned()->default(0);//numero de descargas del dataset
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
