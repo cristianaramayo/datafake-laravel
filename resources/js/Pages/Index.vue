@@ -18,59 +18,15 @@
         </div>
     </div>
     <div class=" px-6 py-4 justify-center  bg-gray-100 dark:bg-gray-900 ">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex justify-center pt-0  ">
-                <img src="/images/logo-data-science.jpg" width="110" alt="The World's First Fake Data Platform" >      
-            </div>
-            <div class="flex justify-center pt-0  ">
-                <img src="/images/logo-datatuill.jpg" alt="Datatuill" width="263" height="70" >      
-            </div>
-            <div class="flex justify-center pt-0   mt-2 text-gray-600 dark:text-gray-400 text-xl">
-               <h1>The World's First Dummy Data Platform</h1>
-            </div>
-            
-        </div>        
+           
          <div>           
-
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">  
-                <div class="md:grid md:grid-cols-1 md:gap-6">
-                    
-                    <div class="md:col-span-2 mt-5 md:mt-0">
-                        <div class="shadow bg-white md:rounded-md p-4">
-                            <form @submit.prevent="submit">
-                                
-                                <label class="block font-medium text-md text-gray-700 py-3">
-                                    Dataset generator
-                                </label>
-                                <textarea 
-                                    class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.code"
-                                    rows="2" 
-                                ></textarea>
-                                <button 
-                                    class="   bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-                                >Send</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="md:col-span-1">
-                        <div class="px-4 sm:px0">
-                            <h3 class="text-lg text-gray-900">Create Dataset</h3>
-                            <p class="text-sm text-gray-600">Instrucciones blabla bla...</p>
-                        </div>
-                    </div>
-                </div>  
-            </div>
+             
+        <hero-section>
+        
+        </hero-section>
         </div>
-             </div>  
-            </div>
-        </div>
-        </div>
+    </div>
+        <div> 
         <div>            
                 
          
@@ -116,6 +72,38 @@
     </div>
 </template>
 
+
+
+<script>
+    import { defineComponent } from 'vue'
+    import { Head, Link } from '@inertiajs/inertia-vue3';
+    import HeroSection from '../components/HeroSection.vue';
+
+    export default defineComponent({
+        components: {
+            Head,
+            Link,
+            HeroSection,
+        },
+
+        props: {
+            canLogin: Boolean,
+            canRegister: Boolean,
+            laravelVersion: String,
+            phpVersion: String,
+        },
+        data () {
+            return {
+               
+            }
+        },
+        methods: {
+            submit() {
+               // this.$inertia.post(this.route('store'), this.form)
+            }
+        }
+    })
+</script>
 <style scoped>
     .bg-gray-100 {
         background-color: #f7fafc;
@@ -179,34 +167,3 @@
         }
     }
 </style>
-
-<script>
-    import { defineComponent } from 'vue'
-    import { Head, Link } from '@inertiajs/inertia-vue3';
-
-    export default defineComponent({
-        components: {
-            Head,
-            Link,
-        },
-
-        props: {
-            canLogin: Boolean,
-            canRegister: Boolean,
-            laravelVersion: String,
-            phpVersion: String,
-        },
-        data () {
-            return {
-                form: {
-                    code: '',
-                }
-            }
-        },
-        methods: {
-            submit() {
-                this.$inertia.post(this.route('store'), this.form)
-            }
-        }
-    })
-</script>

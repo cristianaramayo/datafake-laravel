@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class DatasetController extends Controller
 {
    
-    public function store(Request $request)
+    public function create(Request $request)
     {
         //recibimos un String DESDE FRONTEND  -----------
         $code = $request->code;
@@ -24,25 +24,16 @@ class DatasetController extends Controller
        
         $datas = [$title, $code, $first_objects, $last_objects];
 
-        return Inertia::render('Datasets/Store', compact('datas'));
+        return Inertia::render('Datasets/Create', compact('datas'));
         
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'about' => 'required',
         ]);
 
-       // $user_id = Auth::user()->getId();;
-/*
-        $dataset = new Dataset;
-        
-        $dataset->user_id = Auth::user()->getId();
-        $dataset->title = $request->title;
-        $dataset->code = $request->code;
-        $dataset->about = $request->about;
- */       
         $datas = [
             'user_id' => Auth::user()->getId(),
             'title' => $request->title,
@@ -50,10 +41,10 @@ class DatasetController extends Controller
             'about' => $request->about,
             
         ];
-        $msg = $datas['title'];
+       // $msg = $datas['title'];
 
         $dataset = Dataset::create($datas);
-        return redirect()->route('dashboard')->with('message', 'Dataset created:'.$msg.'<-');
+        return redirect()->route('dashboard')->with('message', 'Dataset created succsess');
     }
 
   /*  public function create($data_string)

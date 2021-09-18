@@ -1,8 +1,8 @@
 <template>
-    <app-layout title="Dashboard">
+    <app-layout >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Datatuill
+                
             </h2>
         </template>
 
@@ -87,7 +87,7 @@
 
             },*/
             submit() {
-                this.$inertia.post(this.route('store'), this.form)
+                this.$inertia.post(this.route('create'), this.form)
             }
         },
         

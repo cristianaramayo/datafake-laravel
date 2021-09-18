@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Dashboard">
+    <app-layout >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                
@@ -143,7 +143,7 @@
         },
         methods: {
             submit() {
-                this.$inertia.post(this.route('create'), this.form)
+                this.$inertia.post(this.route('store'), this.form)
             }
         }
     })

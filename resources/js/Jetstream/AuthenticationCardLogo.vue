@@ -1,6 +1,6 @@
 <template>
     <Link :href="'/'">
-       <img src="/images/logo.jpg" alt="Datatuill" style="width:126px;">
+       <img src="/images/logo-datatuill.png" alt="Datatuill" style="width:126px;">
     </Link>
 </template>
 
