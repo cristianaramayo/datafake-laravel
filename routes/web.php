@@ -15,6 +15,9 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('index', [App\Http\Controllers\PageController::class, 'index'])
+    
+    ->name('index'); 
 
 Route::get('dashboard', [App\Http\Controllers\PageController::class, 'dashboard'])
     ->middleware('auth:sanctum')
@@ -30,5 +33,5 @@ Route::post('/datasets/create', [DatasetController::class, 'create'])
 /*
 Route::resource('datasets', App\Http\Controllers\DatasetController::class)
     ->middleware('auth:sanctum');
-*/
+*/    
 
